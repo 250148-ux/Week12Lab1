@@ -4,11 +4,12 @@ import javafx.geometry.Pos;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
+import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.layout.GridPane;
-import javafx.scene.layout.StackPane;
-import javafx.scene.layout.VBox;
+import javafx.scene.layout.*;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
+import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Font;
 import javafx.scene.text.FontWeight;
 import javafx.stage.Stage;
@@ -16,11 +17,102 @@ import javafx.stage.Stage;
 import static javafx.application.Application.launch;
 
 public class Main extends Application {
+    private double offsetX, offsetY;
+
     @Override
     public void start(Stage stage) throws Exception {
 
-        ///Problem 4
+        ///Problem 6
+        Rectangle rect = new Rectangle(220,180,60,40);
+        rect.setFill(Color.BLUE);
 
+        TextField posField = new TextField("X: 220  Y: 180");
+        posField.setEditable(false);
+        posField.setLayoutX(0);
+        posField.setLayoutY(360);  // near bottom of 400px pane
+
+        Pane pane = new Pane(rect, posField);
+        pane.setPrefSize(500, 400);
+
+        Scene scene = new Scene(pane);
+
+        scene.setOnKeyPressed(e -> {
+            double x = rect.getX();
+            double y = rect.getY();
+
+            switch (e.getCode()) {
+                case UP    -> y -= 10;
+                case DOWN  -> y += 10;
+                case LEFT  -> x -= 10;
+                case RIGHT -> x += 10;
+            }
+
+            x = Math.max(0, Math.min(x, 500 - 60));
+            y = Math.max(0, Math.min(y, 400 - 40));
+
+            rect.setX(x);
+            rect.setY(y);
+            posField.setText("X: " + (int)x + "  Y: " + (int)y);
+        });
+
+        stage.setScene(scene);
+        stage.setTitle("Keyboard Move");
+        stage.show();
+        scene.getRoot().requestFocus();
+
+        ///Problem 5
+        /*Circle circle = new Circle(250, 200, 40, Color.CORAL);
+
+        circle.setOnMousePressed(e -> {
+            offsetX = e.getSceneX() - circle.getCenterX();
+            offsetY = e.getSceneY() - circle.getCenterY();
+            circle.setFill(Color.TOMATO);
+        });
+
+        circle.setOnMouseDragged(e -> {
+            circle.setCenterX(e.getSceneX() - offsetX);
+            circle.setCenterY(e.getSceneY() - offsetY);
+        });
+
+        circle.setOnMouseReleased(e -> {
+            circle.setFill(Color.CORAL);
+        });
+
+        Pane pane = new Pane(circle);
+        pane.setPrefSize(500, 400);
+
+        stage.setScene(new Scene(pane));
+        stage.setTitle("Draggable Circle");
+        stage.show();*/
+
+        ///Problem 4
+        /*TextField inputField = new TextField();
+        inputField.setPromptText("Type here...");
+
+        TextArea logArea = new TextArea();
+        logArea.setEditable(false);
+        logArea.setPrefRowCount(5);
+
+        inputField.setOnKeyPressed(e -> {
+            logArea.appendText("PRESSED  | Code: " + e.getCode() + " | Shift: " + e.isShiftDown() + " | Ctrl: "  + e.isControlDown() + "\n");
+        });
+        inputField.setOnKeyReleased(e -> {
+            logArea.appendText("RELEASED | Code: " + e.getCode() + "\n");
+        });
+        inputField.setOnKeyTyped(e -> {
+            logArea.appendText("TYPED    | Char: " + e.getCharacter() + "\n");
+        });
+
+        Button clearBtn = new Button("Clear Log");
+        clearBtn.setOnAction(e -> logArea.clear());
+
+        VBox vbox = new VBox(10);
+        vbox.setPadding(new Insets(20));
+        vbox.getChildren().addAll(inputField, logArea, clearBtn);
+
+        stage.setScene(new Scene(vbox, 420, 320));
+        stage.setTitle("Key Logger");
+        stage.show();*/
 
         ///Problem 3
         /*Label label = new Label("Move the mouse over the pane");
